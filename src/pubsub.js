@@ -1,5 +1,9 @@
-export default class PubSub {
+import EventEmitter from 'events';
+
+export default class PubSub extends EventEmitter {
   constructor() {
+    super();
+
     this._path = null;
     this._connection = null;
     this._router = null;
@@ -63,9 +67,7 @@ export default class PubSub {
       .end();
   }
 
-  publish(data) {
-    console.log('publish', data);
-
+  up(data) {
     this._connections.forEach((connection) => {
       this._send(connection, data);
     });
@@ -73,7 +75,7 @@ export default class PubSub {
     return this;
   }
 
-  fan(data) {
+  down(data) {
     this._send(this._connection, data);
     return this;
   }
@@ -114,7 +116,7 @@ export default class PubSub {
 
   _publish(request, response, next) {
     request.once('error', () => {});
-    request.once('data', (data) => this.publish(data));
+    request.once('data', (data) => this.emit('data', data));
     next();
   }
 }
