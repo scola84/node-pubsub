@@ -7,7 +7,6 @@ export default class PubSub extends EventEmitter {
     this._path = null;
     this._connection = null;
     this._router = null;
-    this._type = null;
 
     this._connections = new Set();
 
