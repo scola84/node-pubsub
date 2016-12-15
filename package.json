@@ -6,22 +6,5 @@
   "author": "M.C. van den Boogaart <scola@kvdb.name>",
   "license": "MIT",
   "main": "./dist/pubsub.js",
-  "jsnext:main": "./index.js",
-  "dependencies": {
-    "async": "^2.1.4",
-    "sha1": "^1.1.1"
-  },
-  "devDependencies": {
-    "rollup": "^0.36.1",
-    "rollup-plugin-buble": "^0.14.0",
-    "uglify-js": "^2.7.3"
-  },
-  "scripts": {
-    "build": "npm run cleanup && npm run rollup",
-    "build:min": "npm run build && npm run min",
-    "cleanup": "rm -rf dist",
-    "min": "uglifyjs dist/pubsub.js -m -o dist/pubsub.min.js",
-    "prepublish": "npm run build:min",
-    "rollup": "rollup -c"
-  }
+  "jsnext:main": "./index.js"
 }
