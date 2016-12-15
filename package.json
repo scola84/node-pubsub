@@ -1,6 +1,6 @@
 {
   "name": "@scola/pubsub",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "PubSub",
   "repository": "github:scola84/node-pubsub",
   "author": "M.C. van den Boogaart <scola@kvdb.name>",
