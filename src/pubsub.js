@@ -4,10 +4,9 @@ export default class PubSub extends EventEmitter {
   constructor() {
     super();
 
-    this._path = null;
     this._connection = null;
     this._router = null;
-
+    this._path = null;
     this._connections = new Set();
 
     this._handleClose = (event) => this.delete(event.connection);
@@ -20,19 +19,33 @@ export default class PubSub extends EventEmitter {
     this.clear();
   }
 
-  path(value) {
-    this._path = value;
-    return this;
-  }
+  connection(value = null) {
+    if (value === null) {
+      return this._connection;
+    }
 
-  connection(value) {
     this._connection = value;
     return this;
   }
 
-  router(value) {
+  router(value = null) {
+    if (value === null) {
+      return this._router;
+    }
+
     this._router = value;
-    return this._bind();
+    this._bind();
+
+    return this;
+  }
+
+  path(value = null) {
+    if (value === null) {
+      return this._path;
+    }
+
+    this._path = value;
+    return this;
   }
 
   add(connection) {
@@ -55,15 +68,18 @@ export default class PubSub extends EventEmitter {
     });
 
     this._connections.clear();
+    return this;
   }
 
-  subscribe(action) {
+  subscribe(action = true) {
     this._connection
       .request()
       .method('SUB')
       .path(this._path)
       .header('x-sub', action)
       .end();
+
+    return this;
   }
 
   up(data) {
@@ -80,17 +96,17 @@ export default class PubSub extends EventEmitter {
   }
 
   _bind() {
-    this._router.sub(this._path, this._handleSubscribe);
-    this._router.pub(this._path, this._handlePublish);
-
-    return this;
+    if (this._router) {
+      this._router.sub(this._path, this._handleSubscribe);
+      this._router.pub(this._path, this._handlePublish);
+    }
   }
 
   _unbind() {
-    this._router.pub(this._path, this._handleSubscribe, false);
-    this._router.sub(this._path, this._handlePublish, false);
-
-    return this;
+    if (this._router) {
+      this._router.pub(this._path, this._handleSubscribe, false);
+      this._router.sub(this._path, this._handlePublish, false);
+    }
   }
 
   _send(connection, data = null) {
